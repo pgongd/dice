@@ -1,0 +1,213 @@
+
+html {
+  font-size: 10px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-user-drag: none;
+  /* user-drag: none; */
+  outline: none;
+}
+
+.diceFace {
+  box-sizing: border-box;
+  position: absolute;
+  width:30rem;
+  height: 30rem;
+  background-color: #f6f3f0;
+  border: 0.2rem solid #ffffff;
+  border-radius: 2rem;
+  transform-style: preserve-3d;
+  transition: 0.5s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transform-origin: center;
+}
+
+.diceFace::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  border-radius: 2rem;
+  transform: translateZ(-0.1rem);
+}
+
+.diceFace > .inner{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.front {
+  transform: translateZ(15rem);
+}
+
+
+.up {
+  transform: rotateX(90deg) translateZ(15rem);
+}
+
+
+.left {
+  transform: rotateY(-90deg) translateZ(15rem);
+}
+
+
+
+.right {
+  transform: rotateY(90deg) translateZ(15rem);
+}
+
+
+
+.bottom {
+  transform: rotateX(-90deg) translateZ(15rem);
+}
+
+
+.back {
+  transform: rotateX(180deg) translateZ(15rem);
+}
+
+
+
+.dice {
+  position: absolute;
+  width: 30rem;
+  height: 30rem;
+  top: calc(50% - 15rem);
+  left: calc(50% - 15rem);
+  transform-style: preserve-3d;
+  transform: rotate3d(0, 0.9, 0.9, 90deg);
+  transition: 0.5s cubic-bezier(0.42, 1.57, 0.62, 0.86);
+}
+
+
+.dice.throw {
+  animation: rotateDice 0.7s ease-in reverse, throwDice 1s linear;
+}
+
+.diceWrap {
+  position: absolute;
+  width: 20rem;
+  height: 20rem;
+  top: calc(50% - 10rem);
+  left: calc(50% - 10rem);
+}
+
+.diceWrap::before {
+  position: absolute;
+  content: "";
+  width: 70%;
+  height: 10%;
+  top: 90%;
+  left: 15%;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 100%;
+  filter: blur(1rem);
+}
+
+
+.diceFace:not(.back) .inner{
+  transform: rotateY(180deg) rotateX(180deg);
+}
+.diceFace .inner > .icon{
+  font-size: 3rem;
+}
+.diceFace .inner > h3{
+  font-size: 2rem;
+}
+.diceFace .inner > p{
+  font-size: 1.6rem;
+}
+
+input[type="range"] {
+  width: 300px;
+  margin-top: 20px;
+}
+
+
+.diceFace.bottom inner{}
+
+@keyframes rotateDice {
+  30% {
+    transform: rotate3d(1, 1, 1, 0deg);
+  }
+  100% {
+    transform: rotate3d(1, 1, 1, 720deg);
+  }
+}
+
+@keyframes rotatePerFace {
+  16% {
+    transform: rotate3d(-0.1, 0.6, -0.4, 180deg);
+  }
+  32% {
+    transform: rotate3d(-0.85, -0.42, 0.73, 180deg);
+  }
+  48% {
+    transform: rotate3d(-0.8, 0.3, -0.75, 180deg);
+  }
+  64% {
+    transform: rotate3d(0.3, 0.45, 0.9, 180deg);
+  }
+  80% {
+    transform: rotate3d(-0.16, 0.6, 0.18, 180deg);
+  }
+  100% {
+    transform: rotate3d(-0.1, 0.3, -1, 180deg);
+  }
+}
+
+@keyframes throwDice {
+  20% {
+    margin-top: -10rem;
+  }
+  40% {
+    margin-top: 0px;
+  }
+  60% {
+    margin-top: -3rem;
+  }
+  80% {
+    margin-top: 0px;
+  }
+  85% {
+    margin-top: -1rem;
+  }
+  90% {
+    margin-top: 0px;
+  }
+  95% {
+    margin-top: -0.3rem;
+  }
+  100% {
+    margin-top: 0px;
+  }
+}
+
+body {
+  background-color: #333;
+}
+
+.controller {
+  position: absolute;
+  width: 20rem;
+  padding: 2rem;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: center;
+  line-height: 4rem;
+}
