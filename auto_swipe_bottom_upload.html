@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <title>Swiper + 애니메이션</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+           *{font-family: "Noto Sans KR", sans-serif;font-size: 28px;line-height: 1.4;color: #000;font-weight: bold;}
+        
+        html,
+        body {
+          position: relative;
+          height: 100%;
+        }
+    
+        body {
+          /* background: #eee; */
+          font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+          font-size: 14px;
+          color: #000;
+          margin: 0;
+          padding: 0;
+        }
+        .swiper { width: 100%; height: 100%; }
+        .swiper-slide { display: flex; justify-content: center; align-items: center; }
+
+        section {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            font-size: 18px;
+            overflow: hidden;
+        }
+
+        .text-box {
+            position: absolute;
+            width: 100%;
+            top: 350px;
+            left: 50%;
+            transform: translate(-50%, -50%) translateY(50px);
+            opacity: 0;
+        }
+        .ico{
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .ico .inner{
+            opacity: 0;
+        }
+
+        .shadow {
+            position: absolute;
+            bottom: -10px;
+            left: 50px;
+            width: 100px;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            filter: blur(5px);
+            animation: shadowScale 1.5s ease-in-out infinite alternate;
+        }
+
+        .ico img {
+            transform: scale(0.5);
+            animation: yoyo 1.5s ease-in-out infinite alternate;
+            width: 200px;
+            height: 200px;
+        }
+
+        @keyframes yoyo {
+            0% {
+                transform: translateY(0);
+                text-shadow: 0 0 10px rgba(52, 152, 219, 0.8);
+            }
+            100% {
+                transform: translateY(-30px);
+                text-shadow: 0 0 20px rgba(52, 152, 219, 1);
+            }
+        }
+        @keyframes shadowScale {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.7);
+                opacity: 0.5;
+            }
+        }
+
+        /* Swiper 컨트롤 버튼 스타일 */
+        .swiper-button-next, .swiper-button-prev {
+            color: #333;
+        }
+        .swiper-pagination-bullet-active {
+            background: #333;
+        }
+       .split-text{margin: 4px 0;}
+
+        /* 바텀시트 스타일 */
+        .bottom-sheet {
+            position: fixed;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: white;
+            box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 15px 15px 0 0;
+            font-size: 20px;
+            text-align: center;
+            transition: bottom 0.5s ease-in-out;
+            z-index: 99;
+        }
+        .bottom-sheet h2{
+            font-size: 20px;
+        }
+        .bottom-sheet.show {
+            bottom: 0;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 18px;
+            color: #000;
+            cursor: pointer;
+            z-index: 999;
+        }
+
+
+
+        .swiper.mySwiper2 {
+        position: absolute;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 400px;
+        height: 500px;
+    }
+
+    .mySwiper2 .swiper-slide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 18px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .mySwiper2 .swiper-slide:nth-child(1n) {
+      background-color: rgb(206, 17, 17);
+    }
+
+    .mySwiper2 .swiper-slide:nth-child(2n) {
+      background-color: rgb(0, 140, 255);
+    }
+
+    .mySwiper2 .swiper-slide:nth-child(3n) {
+      background-color: rgb(10, 184, 111);
+    }
+
+    .mySwiper2 .swiper-slide:nth-child(4n) {
+      background-color: rgb(211, 122, 7);
+    }
+
+    .mySwiper2 .swiper-slide:nth-child(5n) {
+      background-color: rgb(118, 163, 12);
+    }
+
+    .mySwiper2 .swiper-slide:nth-child(6n) {
+      background-color: rgb(180, 10, 47);
+    }
+
+    .mySwiper2 .swiper-slide:nth-child(7n) {
+      background-color: rgb(35, 99, 19);
+    }
+
+    .mySwiper2 .swiper-slide:nth-child(8n) {
+      background-color: rgb(0, 68, 255);
+    }
+
+    .mySwiper2 .swiper-slide:nth-child(9n) {
+      background-color: rgb(218, 12, 218);
+    }
+
+    .mySwiper2 .swiper-slide:nth-child(10n) {
+      background-color: rgb(54, 94, 77);
+    }
+    </style>
+</head>
+<body>
+
+<!-- Swiper 컨테이너 -->
+<div class="swiper autoSwiper">
+    <div class="swiper-wrapper">
+        
+        <!-- 첫 번째 슬라이드 -->
+        <div class="swiper-slide">
+            <section>
+                <div class="text-box first">
+                    <p class="split-text"><strong class="name">대상자명</strong>님</p>
+                    <p class="split-text"><span class="emp">[보유고객수]</span>번째 고객님으로</p>
+                    <p class="split-text">만나게 되어 반갑습니다.</p>
+                </div>
+                <div class="text-box second">
+                    <p class="split-text">2<strong class="name">대상자명</strong>님</p>
+                    <p class="split-text">2<span class="emp">[보유고객수]</span>번째 고객님으로</p>
+                    <p class="split-text">2만나게 되어 반갑습니다.</p>
+                </div>
+                <div class="ico">
+                    <div class="inner">
+                        <img src="resource/images/ico04.svg" alt="sample SVG" />
+                        <div class="shadow"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 두 번째 슬라이드 -->
+        <div class="swiper-slide">
+            <section>
+                <div class="text-box first">
+                    <p class="split-text"><strong class="name">다른 대상자명</strong>님</p>
+                    <p class="split-text"><span class="emp">[보유고객수]</span>번째 고객님으로</p>
+                    <p class="split-text">만나게 되어 반갑습니다.</p>
+                </div>
+                <div class="text-box second">
+                    <p class="split-text">3<strong class="name">대상자명</strong>님</p>
+                    <p class="split-text">3<span class="emp">[보유고객수]</span>번째 고객님으로</p>
+                    <p class="split-text">3만나게 되어 반갑습니다.</p>
+                </div>
+                <div class="ico">
+                    <div class="inner">
+                        <img src="resource/images/ico02.svg" alt="sample SVG" />
+                        <div class="shadow"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 세 번째 슬라이드 -->
+        <div class="swiper-slide">
+            <section>
+                <div class="text-box first">
+                    <p class="split-text"><strong class="name">마지막 대상자명</strong>님</p>
+                    <p class="split-text"><span class="emp">[보유고객수]</span>번째 고객님으로</p>
+                    <p class="split-text">만나게 되어 반갑습니다.</p>
+                </div>
+                <div class="text-box second">
+                    <p class="split-text">4<strong class="name">대상자명</strong>님</p>
+                    <p class="split-text">4<span class="emp">[보유고객수]</span>번째 고객님으로</p>
+                    <p class="split-text">4만나게 되어 반갑습니다.</p>
+                </div>
+                <div class="ico">
+                    <div class="inner">
+                        <img src="resource/images/ico03.svg" alt="sample SVG" />
+                        <div class="shadow"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </div>
+
+    <!-- 스와이프 컨트롤 -->
+    <div class="swiper-pagination"></div>
+</div>
+
+<!-- 바텀시트 -->
+<div class="bottom-sheet" id="bottomSheet">
+    <span class="close-btn" onclick="closeBottomSheet()">✖</span>
+    <h2>바텀시트 제목</h2>
+    <p>스와이프가 끝났습니다! 추가 정보를 확인하세요.</p>
+</div>
+
+<script>
+    // Swiper 초기화 (컨트롤 포함)
+    const swiper = new Swiper('.autoSwiper', {
+        loop: false,
+        // navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+        pagination: { el: ".swiper-pagination", clickable: true },
+        // allowTouchMove: true, // 사용자가 직접 스와이프 가능
+        autoplay: {
+            delay: 5000,
+            stopOnLast: false,
+            disableOnInteraction: false, // 사용자가 터치해도 자동 스와이프 유지
+        },
+        on: {
+            slideChangeTransitionStart: function () {
+                resetAnimations();
+                setTimeout(startAnimations, 1000);
+            },
+            reachEnd: function () {
+                setTimeout(showBottomSheet, 5000);
+                stopAutoplay();
+            },
+        }
+    });
+
+    var swiper2 = new Swiper(".mySwiper2", {
+        nested: true,
+        effect: "cards",
+        grabCursor: true,
+    });
+
+    function stopAutoplay() {
+    swiper.autoplay.stop(); // autoplay 중지
+}
+
+    function resetAnimations() {
+        document.querySelectorAll(".text-box").forEach(el => {
+            el.style.opacity = "0";
+            el.style.transform = "translate(-50%, -50%) translateY(50px)";
+        });
+        document.querySelectorAll(".ico .inner").forEach(el => {
+            el.style.opacity = "0";
+            el.style.transform = "scale(0.5)";
+        });
+    }
+
+    function startAnimations() {
+        const activeSlide = document.querySelector(".swiper-slide-active section");
+
+        // GSAP 애니메이션 적용
+        gsap.set(activeSlide.querySelector(".first"), { opacity: 0, y: 50 });
+        gsap.set(activeSlide.querySelector(".second"), { opacity: 0, y: 50 });
+        gsap.set(activeSlide.querySelector(".ico .inner"), { opacity: 0, scale: 0.5 });
+
+        gsap.timeline()
+            .to(activeSlide.querySelector(".first"), { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" })
+            .to(activeSlide.querySelector(".ico .inner"), { opacity: 1, scale: 1, duration: 0.5, ease: "elastic.out(1, 0.5)" }, "-=1.5") // 동시에 등장
+            .to(activeSlide.querySelector(".first"), { opacity: 0, y: -50, duration: 0.5, delay: 1 })
+            .to(activeSlide.querySelector(".second"), { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" })
+
+    }
+
+    function showBottomSheet() {
+        document.getElementById("bottomSheet").classList.add("show");
+        swiper.allowTouchMove = false; // 사용자 스와이프 막기
+    }
+
+    function closeBottomSheet() {
+        document.getElementById("bottomSheet").classList.remove("show");
+        swiper.allowTouchMove = true; // 바텀시트가 닫히면 다시 스와이프 허용
+    }
+
+
+
+    // 첫 슬라이드에서 애니메이션 시작
+    startAnimations();
+</script>
+
+
+</body>
+</html>
